@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Home</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'css/noscript.css' %}" /></noscript>
+</head>
+
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="" alt="" /><h1>KPI Management</h1></span>
+					</header>
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						<h3>Hello {{ user.username }}</h3>
+						<form action="{% url 'logout' %}" method="post" style="margin: 0;">
+							{% csrf_token %}
+							<button type="submit" style="margin: 0;">Logout</button>
+						</form>
+					</div>
+					
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+	
+							<li><a href="#second">Dashboard</a></li>
+							<li><a href="#cta">KPI Management</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						
+						<!-- Introduction -->
+							
+
+						<!-- First Section -->
+							
+						<!-- Second Section -->
+							<section id="second" class="main special">
+								<header class="major">
+									<h2>Dashboard</h2>
+									
+								</header>
+								<ul class="statistics">
+									{% if highest_day_kpi_user %}
+									<li class="style1">
+										<span class="icon solid fa-code-branch"></span>
+										<strong>{{ highest_day_kpi_user.day_kpi }}</strong> Today's highest points 
+										 <p>{{ highest_day_kpi_user.name }}</p>
+									</li>
+									{% endif %}
+									{% if highest_month_kpi_user %}
+									<li class="style2">
+										<span class="icon fa-folder-open"></span>
+										<strong>{{ highest_month_kpi_user.month_kpi }}</strong> Highest points of the month
+										<p>{{ highest_month_kpi_user.name }}</p>
+									</li>
+									{% endif %}
+									{% if highest_total_kpi_user %}
+									<li class="style3">
+										<span class="icon solid fa-signal"></span>
+										<strong>{{ highest_total_kpi_user.total_kpi }}</strong> Highest Point score 
+										<p>{{ highest_total_kpi_user.name }}</p>
+									</li>
+									{% endif %}
+								</ul>
+							
+							</section>
+
+						<!-- Get Started -->
+							<section id="cta" class="main special">
+								<header class="major">
+									<h2>KPI Point Management</h2>
+									<form method="post" onsubmit="saveScrollPosition()">
+										{% csrf_token %}
+										{{ form.as_p }}
+										<input type="submit" value="Submit KPI">
+									</form>
+								</header>
+								<table>
+									<!-- Table to display users and their current KPIs -->
+									<table>
+										<tr>
+											<th>User Name</th>
+											<th>Day KPI</th>
+											<th>Month KPI</th>
+											<th>Total KPI</th>
+										</tr>
+										{% for employee in employees %}
+										<tr>
+											
+											<td><a href="{% url 'user_data' employee.id %}">{{ employee.name }}</a></td>
+											<td>{{ employee.day_kpi }}</td>
+											<td>{{ employee.month_kpi }}</td>
+											<td>{{ employee.total_kpi }}</td>
+										</tr>
+										{% endfor %}
+									</table>
+									
+								<!-- Existing table code -->
+
+								<form action="{% url 'transfer_kpi' %}" method="post" onsubmit="saveScrollPosition()">
+									{% csrf_token %}
+									<button type="submit">Transfer Day KPI to Month KPI</button>
+								</form>
+								
+								<form action="{% url 'transfer_month_kpi' %}" method="post" onsubmit="saveScrollPosition()">
+									{% csrf_token %}
+									<button type="submit">Rest Month KPI </button>
+								</form>
+
+					</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						
+						</section>
+						<p class="copyright">&copy; development. Design: <a href="https://github.com/mostafa6266">Mostafa Mohamed</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script>
+			window.onload = function() {
+				if (sessionStorage.getItem("scrollPosition") !== null) {
+					window.scrollTo(0, parseInt(sessionStorage.getItem("scrollPosition")));
+					sessionStorage.removeItem("scrollPosition");
+				}
+			};
+		
+			function saveScrollPosition() {
+				sessionStorage.setItem("scrollPosition", window.scrollY || window.pageYOffset);
+			}
+		</script>
+		
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrollex.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'js/browser.min.js' %}"></script>
+		<script src="{% static 'js/breakpoints.min.js' %}"></script>
+		<script src="{% static 'js/util.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+		
+	</body>
+</html>

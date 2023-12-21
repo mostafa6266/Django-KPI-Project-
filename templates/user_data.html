@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>user page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'css/noscript.css' %}" /></noscript>
+	</head>
+
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				
+				<!-- Header -->
+					<header id="header">
+						<h1>{{ user_data.name }}</h1>
+
+						<p>total point {{ user_data.total_kpi }}</p>
+					</header>
+					<form action="{% url 'logout' %}" method="post">
+						{% csrf_token %}
+						<button type="submit">Logout</button>
+					</form>
+					<nav id="nav">
+						<ul>
+							<li><a href="/">Home</a></li>
+							
+						</ul>
+					</nav>
+					
+				<!-- Main -->
+					<div id="main">
+						
+						<!-- Content -->
+							<section id="content" class="main">
+								<h2>Responsibilities</h2>
+								{% if responsibilities %}
+								<ul>
+									{% for responsibility in responsibilities %}
+										<li>{{ responsibility.responsible }}</li>
+									{% endfor %}
+								</ul>
+								{% else %}
+								<p>No responsibilities assigned.</p>
+								{% endif %}
+
+
+								<h2>comments</h2>
+								{% if comments %}
+									<ul>
+										{% for comment in comments %}
+										<div class="comment-block">
+											<li>{{ comment.comment }}</li>
+											<ul>It was created by {{ comment.user }}</ul>
+											<ul>On {{ comment.date }}</ul>
+										</div>
+										
+									{% endfor %}
+									
+
+									</ul>
+								{% else %}
+									<p>No comments assigned.</p>
+								{% endif %}
+								<hr style="background-color: black; height: 3px;">
+								<h2>Add a Comment</h2>
+								<form method="post">
+									{% csrf_token %}
+									{{ comment_form.as_p }}
+									<button type="submit">Submit Comment</button>
+								</form>
+								
+								<!-- The rest of your template code -->
+								
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; development. Design: <a href="https://github.com/mostafa6266">Mostafa Mohamed</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrollex.min.js' %}"></script>
+		<script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'js/browser.min.js' %}"></script>
+		<script src="{% static 'js/breakpoints.min.js' %}"></script>
+		<script src="{% static 'js/util.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+
+	</body>
+</html>
